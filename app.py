@@ -7,6 +7,7 @@ from fastapi import FastAPI, Form
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List, Optional
+import llm_translate
 
 app = FastAPI()
 
