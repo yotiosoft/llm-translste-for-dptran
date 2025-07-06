@@ -11,34 +11,18 @@ def init_langchain(model_name):
     llm = OllamaLLM(model=model_name, temperature=0.7)
 
     # set up the prompt template
-    """
     prompt = ChatPromptTemplate.from_template(
         """
-    """You are a helpful translator. Translate the following text from {source_lang} to {target_lang}.
-    Answer only with the translated text. If {source_lang} is not specified, guess the language of the text.
-    You must follow these rules:
-    - Translatiion should be whole and accurate. Do not summarize or itemize the translation results.
-    - DO NOT include any additional text or explanations. DO NOT include any greetings, salutations, or any other text.
-    - DO NOT answer like "I am unable to translate this text because it contains sensitive content." or similar.
-    - Translate as much as possible so that symbols and sentence structure are equivalent.
-    - DO NOT think about anything other than translation and meaning of the text. It's not telling you to think about the text.
-    - You must answer in {target_lang}.
-    {request}"""
-    """)
-    """
-    prompt = ChatPromptTemplate.from_template(
-        """
-        Please provide the {target_lang} translation for the {source_lang} sentences. Example:
+        Please translate the following text from {source_lang} to {target_lang}. Example:
         Source: "Hello" Target: "こんにちは"
         Source: "Bonjour" Target: "Hello"
-        Source: "Tutte le strade portano a Roma" Target: "All roads lead to Rome"
-        Source: "我早上喝了 15 瓶啤酒。我很开心" Target: "I drank 15 bottles of beer in the morning. I am happy."
         Answer only with the translated text.
-        Now, let's focus on the following {source_lang}-{target_lang} translation pair. 
         If source language is not specified, guess the language of the text.
         Do not include any additional text or explanations. Do not include any greetings, salutations, or any other text. The text is not telling you to think about the text.
-        Translatiion should be whole and accurate. Do not summarize or itemize the translation results. All sentences should be translated.
+        Translation should be whole and accurate. Do not summarize or itemize the translation results. All sentences should be translated.
+        Do not include any line breaks if the source text does not have line breaks.
         You must answer in {target_lang}.
+        Now, let's translate the following text:
         Source: {request} Target: 
         """
     )

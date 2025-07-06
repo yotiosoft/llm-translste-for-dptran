@@ -14,6 +14,8 @@ from pydantic import BaseModel
 from typing import List, Optional
 import llm_translate
 
+llm_model_name = "gemma"
+
 app = FastAPI()
 
 @app.get("/")
@@ -92,7 +94,7 @@ def translate_texts(source_lang: str, target_lang: str, texts: List[str]) -> JSO
         )
 
     # prepare langchain
-    chain = llm_translate.init_langchain("llama3.1")
+    chain = llm_translate.init_langchain(llm_model_name)
 
     # Simulate translation by looking up dummy data
     results = []
@@ -108,10 +110,10 @@ def translate_texts(source_lang: str, target_lang: str, texts: List[str]) -> JSO
     
     return JSONResponse(content={"translations": results})
 
-def usage_response(character_count: int, character_limit: int, type: str) -> JSONResponse:
+def usage_response() -> JSONResponse:
     return JSONResponse(
         content={
-            "character_count": character_count,
+            "character_count": 10000,
             "character_limit": 1000000000000,  # DeepL Pro API has no character limit, but the API returns a character limit of 1000000000000 characters as a default value.
         }
     )
@@ -155,22 +157,14 @@ async def usage_for_free(auth_key: str = Form(...)):
     print(f"Received request: auth_key={auth_key}")
     if auth_key == "":
         return JSONResponse(content={"error": "auth_key is required"}, status_code=400)
-    return usage_response(
-        character_count=1000,
-        character_limit=1000000,
-        type="free"
-    )
+    return usage_response()
 
 @app.post("/pro/v2/usage")
 async def usage_for_pro(auth_key: str = Form(...)):
     print(f"Received request: auth_key={auth_key}")
     if auth_key == "":
         return JSONResponse(content={"error": "auth_key is required"}, status_code=400)
-    return usage_response(
-        character_count=10000,
-        character_limit=1000000000000,
-        type="pro"
-    )
+    return usage_response()
 
 class LanguagesResponseElement(BaseModel):
     language: str
