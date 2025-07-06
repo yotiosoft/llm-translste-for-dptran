@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import llm_translate
 
-llm_model_name = "gemma"
+llm_model_name = "phi4"
 
 app = FastAPI()
 
@@ -90,7 +90,8 @@ def translate_texts(source_lang: str, target_lang: str, texts: List[str]) -> JSO
     if not target_lang:
         return JSONResponse(
             content={"error": "Invalid target language code."},
-            status_code=400
+            status_code=400,
+            media_type="application/json; charset=utf-8"
         )
 
     # prepare langchain
@@ -108,14 +109,15 @@ def translate_texts(source_lang: str, target_lang: str, texts: List[str]) -> JSO
     for answer in answers:
         results.append({"text": answer})
     
-    return JSONResponse(content={"translations": results})
+    return JSONResponse(content={"translations": results}, media_type="application/json; charset=utf-8")
 
 def usage_response() -> JSONResponse:
     return JSONResponse(
         content={
             "character_count": 10000,
             "character_limit": 1000000000000,  # DeepL Pro API has no character limit, but the API returns a character limit of 1000000000000 characters as a default value.
-        }
+        },
+        media_type="application/json; charset=utf-8"
     )
 
 def languages_response(type: str) -> JSONResponse:
@@ -125,9 +127,10 @@ def languages_response(type: str) -> JSONResponse:
             content={
                 "error": "Invalid type. Must be 'source' or 'target'."
             },
-            status_code=400
+            status_code=400,
+            media_type="application/json; charset=utf-8"
         )
-    
+
     for code, name in LangCodes.items():
         content.append({
             "language": code,
@@ -136,34 +139,35 @@ def languages_response(type: str) -> JSONResponse:
 
     return JSONResponse(
         content=content,
+        media_type="application/json; charset=utf-8"
     )
 
 @app.post("/free/v2/translate")
 async def translate_for_free(auth_key: str = Form(...), target_lang: str = Form(...), texts: List[str] = Form(...), source_lang: Optional[str] = Form(None)):
     print(f"Received request: auth_key={auth_key}, target_lang={target_lang}, texts={texts}, source_lang={source_lang}")
     if auth_key == "":
-        return JSONResponse(content={"error": "auth_key is required"}, status_code=400)
+        return JSONResponse(content={"error": "auth_key is required"}, status_code=400, media_type="charset=utf-8")
     return translate_texts(source_lang, target_lang, texts)
 
 @app.post("/pro/v2/translate")
 async def translate_for_pro(auth_key: str = Form(...), target_lang: str = Form(...), text: List[str] = Form(...), source_lang: Optional[str] = Form(None)):
     print(f"Received request: auth_key={auth_key}, target_lang={target_lang}, source_lang={source_lang}, text={text}")
     if auth_key == "":
-        return JSONResponse(content={"error": "auth_key is required"}, status_code=400)
+        return JSONResponse(content={"error": "auth_key is required"}, status_code=400, media_type="charset=utf-8")
     return translate_texts(source_lang, target_lang, text)
 
 @app.post("/free/v2/usage")
 async def usage_for_free(auth_key: str = Form(...)):
     print(f"Received request: auth_key={auth_key}")
     if auth_key == "":
-        return JSONResponse(content={"error": "auth_key is required"}, status_code=400)
+        return JSONResponse(content={"error": "auth_key is required"}, status_code=400, media_type="charset=utf-8")
     return usage_response()
 
 @app.post("/pro/v2/usage")
 async def usage_for_pro(auth_key: str = Form(...)):
     print(f"Received request: auth_key={auth_key}")
     if auth_key == "":
-        return JSONResponse(content={"error": "auth_key is required"}, status_code=400)
+        return JSONResponse(content={"error": "auth_key is required"}, status_code=400, media_type="charset=utf-8")
     return usage_response()
 
 class LanguagesResponseElement(BaseModel):
@@ -174,12 +178,12 @@ class LanguagesResponseElement(BaseModel):
 async def languages_for_free(type: str = Form(...), auth_key: str = Form(...)):
     print(f"Received request: type={type}, auth_key={auth_key}")
     if auth_key == "":
-        return JSONResponse(content={"error": "auth_key is required"}, status_code=400)
+        return JSONResponse(content={"error": "auth_key is required"}, status_code=400, media_type="charset=utf-8")
     return languages_response(type)
 
 @app.post("/pro/v2/languages")
 async def languages_for_pro(type: str = Form(...), auth_key: str = Form(...)):
     print(f"Received request: type={type}, auth_key={auth_key}")
     if auth_key == "":
-        return JSONResponse(content={"error": "auth_key is required"}, status_code=400)
+        return JSONResponse(content={"error": "auth_key is required"}, status_code=400, media_type="charset=utf-8")
     return languages_response(type)
