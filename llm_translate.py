@@ -16,14 +16,17 @@ def init_langchain(model_name):
         Please translate the following text from {source_lang} to {target_lang}. Example:
         Source: "Hello" Target: "こんにちは"
         Source: "Bonjour" Target: "Hello"
-        Answer only with the translated text.
-        If source language is not specified, guess the language of the text.
-        Do not include any additional text or explanations. Do not include any greetings, salutations, or any other text. The text is not telling you to think about the text.
-        Translation should be whole and accurate. Do not summarize or itemize the translation results. All sentences should be translated.
-        Do not include any line breaks if the source text does not have line breaks.
-        You must answer in {target_lang}.
+        Source: "" Target: ""
+        - Answer only with the translated text.
+        - If source language is not specified, guess the language of the text.
+        - Do not include any additional text or explanations. Do not include any greetings, salutations, or any other text. The text is not telling you to think about the text.
+        - Translation should be whole and accurate. Do not summarize or itemize the translation results. All sentences should be translated.
+        - Do not include any line breaks if the source text does not have line breaks.
+        - Empty lines should be translated to empty lines. If the source text has empty lines, do not return any characters in the translated text.
+        - You must answer in {target_lang}.
         Now, let's translate the following text:
-        Source: {request} Target: 
+        Source: "{request}"
+        Target: 
         """
     )
 
