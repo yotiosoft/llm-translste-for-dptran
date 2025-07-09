@@ -70,7 +70,17 @@ LangCodes = {
     "UK": "Ukrainian",
     "ZH": "Chinese (simplified)",
     "ZH-HANS": "Chinese (simplified)",
-    "ZH-HANT": "Chinese (traditional)"
+    "ZH-HANT": "Chinese (traditional)",
+    # Additional languages
+    "HI": "Hindi",
+    "BN": "Bengali",
+    "SW": "Swahili",
+    "TH": "Thai",
+    "VI": "Vietnamese",
+    "JA-OS": "Japanese (Osaka dialect)",
+    "JA-KY": "Japanese (Kyoto dialect)",
+    "JA-HA": "Japanese (Hakata dialect)",
+    "OK": "Okinawan",
 }
 
 def get_lang_code(lang: str) -> str:
