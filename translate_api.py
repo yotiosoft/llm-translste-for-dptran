@@ -77,10 +77,11 @@ LangCodes = {
     "SW": "Swahili",
     "TH": "Thai",
     "VI": "Vietnamese",
-    "JA-OS": "Japanese (Osaka dialect)",
-    "JA-KY": "Japanese (Kyoto dialect)",
-    "JA-HA": "Japanese (Hakata dialect)",
-    "OK": "Okinawan",
+    "MS": "Malay",
+    "TL": "Tagalog",
+    "FA": "Persian",
+    "HE": "Hebrew",
+    "LA": "Latin",
 }
 
 def get_lang_code(lang: str) -> str:
