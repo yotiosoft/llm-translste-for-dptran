@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import llm_translate
 
-llm_model_name = "phi4"
+llm_model_name = "phi4-mini"
 
 app = FastAPI()
 
@@ -80,7 +80,8 @@ LangCodes = {
     "MS": "Malay",
     "TL": "Tagalog",
     "FA": "Persian",
-    "HE": "Hebrew",
+    "MY": "Burmese",
+    "ID": "Indonesian",
     "LA": "Latin",
 }
 
